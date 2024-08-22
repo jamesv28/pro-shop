@@ -1,4 +1,6 @@
 import { Card } from "react-bootstrap";
+import PropTypes from "prop-types";
+
 const Product = ({ product }) => {
   return (
     <Card className="my-3 p-3 rounded">
@@ -17,4 +19,7 @@ const Product = ({ product }) => {
   );
 };
 
+Product.propTypes = {
+  product: PropTypes.object,
+};
 export default Product;
