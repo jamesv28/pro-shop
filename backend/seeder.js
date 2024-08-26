@@ -10,7 +10,7 @@ import connectDb from "./config/db.js";
 
 dotenv.config();
 
-connectDb();
+await connectDb();
 
 const importData = async () => {
   try {
@@ -25,6 +25,7 @@ const importData = async () => {
     const sampleProducts = products.map((product) => {
       return { ...product, user: adminUser };
     });
+
     await Product.insertMany(sampleProducts);
 
     console.log("Data Imported!".green.inverse);
