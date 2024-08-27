@@ -11,7 +11,6 @@ const ProductScreen = () => {
     isLoading,
     error,
   } = useGetProductDetailsQuery(productId);
-  console.log("product", product);
 
   return (
     <>
