@@ -7,7 +7,7 @@ const Message = ({ variant = "info", children }) => {
 
 Message.propTypes = {
   variant: PropTypes.string,
-  children: PropTypes.string,
+  children: PropTypes.array,
 };
 
 export default Message;
