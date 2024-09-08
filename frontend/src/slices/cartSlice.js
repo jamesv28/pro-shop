@@ -10,7 +10,7 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const { user, rating, numReviews, reviews, ...item } = action.payload;
+      const item = action.payload;
 
       const existItem = state.cartItems.find((x) => x._id === item._id);
 
@@ -31,7 +31,8 @@ const cartSlice = createSlice({
     },
     saveShippingAddress: (state, action) => {
       state.shippingAddress = action.payload;
-      localStorage.setItem("cart", JSON.stringify(state));
+      // localStorage.setItem("cart", JSON.stringify(state));
+      return updateCart(state);
     },
   },
   savePaymentMethod: (state, action) => {

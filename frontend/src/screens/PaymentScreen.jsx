@@ -1,30 +1,32 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Form, Button, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { savePaymentMethod } from "../slices/cartSlice";
 
 const PaymentScreen = () => {
-  const [paymentMethod, setPaymentMethod] = useState("PayPal");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
+
   useEffect(() => {
-    if (!shippingAddress) {
+    if (!shippingAddress.address) {
       navigate("/shipping");
     }
-  }, [shippingAddress, navigate]);
+  }, [navigate, shippingAddress]);
+
+  const [paymentMethod, setPaymentMethod] = useState("PayPal");
+
+  const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("in the function");
     dispatch(savePaymentMethod(paymentMethod));
     navigate("/placeorder");
   };
+
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 step3 />
@@ -42,9 +44,10 @@ const PaymentScreen = () => {
               value="PayPal"
               checked
               onChange={(e) => setPaymentMethod(e.target.value)}
-            />
+            ></Form.Check>
           </Col>
         </Form.Group>
+
         <Button type="submit" variant="primary">
           Continue
         </Button>
