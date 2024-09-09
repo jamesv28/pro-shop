@@ -21,7 +21,6 @@ const cartSlice = createSlice({
       } else {
         state.cartItems = [...state.cartItems, item];
       }
-
       return updateCart(state, item);
     },
     removeFromCart: (state, action) => {
@@ -34,14 +33,14 @@ const cartSlice = createSlice({
       // localStorage.setItem("cart", JSON.stringify(state));
       return updateCart(state);
     },
-  },
-  savePaymentMethod: (state, action) => {
-    state.paymentMethod = action.payload;
-    return updateCart(state);
-  },
-  clearCartItems: (state) => {
-    state.cartItems = [];
-    return updateCart(state);
+    savePaymentMethod: (state, action) => {
+      state.paymentMethod = action.payload;
+      return updateCart(state);
+    },
+    clearCartItems: (state) => {
+      state.cartItems = [];
+      return updateCart(state);
+    },
   },
 });
 
