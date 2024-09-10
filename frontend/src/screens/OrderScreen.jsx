@@ -57,6 +57,43 @@ const OrderScreen = () => {
     }
   }, [errorPayPal, loadingPayPal, order, paypal, payPalDispatch]);
 
+  async function onApproveTest() {
+    await payOrder({ orderId, details: { payer: {} } });
+    refetch();
+    toast.success("Payment successful");
+  }
+
+  function createOrder(data, actions) {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            amount: {
+              value: order.totalPrice,
+            },
+          },
+        ],
+      })
+      .then((orderId) => {
+        return orderId;
+      });
+  }
+
+  function onApprove(data, actions) {
+    return actions.order.capture().then(async function (details) {
+      try {
+        await payOrder({ orderId, details });
+        refetch();
+        toast.success("Payment successful");
+      } catch (error) {
+        toast.error(`Error occurred: ${error?.data?.message || error.message}`);
+      }
+    });
+  }
+
+  function onError(err) {
+    toast.error(`${err.message}`);
+  }
   return isLoading ? (
     <Loader />
   ) : error ? (
@@ -121,27 +158,51 @@ const OrderScreen = () => {
         </Col>
         <Col md={4}>
           <Card variant="flush">
-            <ListGroup.Item>
-              <h2>Order Summary</h2>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Row>
-                <Col>Items</Col>
-                <Col>${order.itemsPrice}</Col>
-              </Row>
-              <Row>
-                <Col>Shipping</Col>
-                <Col>${order.shippingPrice}</Col>
-              </Row>
-              <Row>
-                <Col>Tax</Col>
-                <Col>${order.taxPrice}</Col>
-              </Row>
-              <Row>
-                <Col>Total</Col>
-                <Col>${order.totalPrice}</Col>
-              </Row>
-            </ListGroup.Item>
+            <ListGroup>
+              <ListGroup.Item>
+                <h2>Order Summary</h2>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Items</Col>
+                  <Col>${order.itemsPrice}</Col>
+                </Row>
+                <Row>
+                  <Col>Shipping</Col>
+                  <Col>${order.shippingPrice}</Col>
+                </Row>
+                <Row>
+                  <Col>Tax</Col>
+                  <Col>${order.taxPrice}</Col>
+                </Row>
+                <Row>
+                  <Col>Total</Col>
+                  <Col>${order.totalPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              {!order.isPaid && (
+                <ListGroup.Item>
+                  {loadingPay && <Loader />}
+                  {isPending ? (
+                    <Loader />
+                  ) : (
+                    <div>
+                      <Button
+                        style={{ marginBottom: "10px" }}
+                        onClick={onApproveTest}
+                      >
+                        Test Button
+                      </Button>
+                      <PayPalButtons
+                        createOrder={createOrder}
+                        onApprove={onApprove}
+                        onError={onError}
+                      />
+                    </div>
+                  )}
+                </ListGroup.Item>
+              )}
+            </ListGroup>
           </Card>
         </Col>
       </Row>
