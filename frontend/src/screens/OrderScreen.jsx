@@ -91,7 +91,7 @@ const OrderScreen = () => {
   return isLoading ? (
     <Loader />
   ) : error ? (
-    <Message variant="error">{error}</Message>
+    <Message variant="error">{error.data.message}</Message>
   ) : (
     <>
       <h2>Order: {order._id}</h2>
@@ -125,7 +125,9 @@ const OrderScreen = () => {
                 <strong>Method</strong> {order.paymentMethod}
               </p>
               {order.isPaid ? (
-                <Message variant="success">Paid at: {order.paidAt}</Message>
+                <Message variant="success">
+                  {`Paid at: ${order.paidAt}`}}
+                </Message>
               ) : (
                 <Message variant="danger">Not Paid</Message>
               )}
