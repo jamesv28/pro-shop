@@ -57,12 +57,6 @@ const OrderScreen = () => {
     }
   }, [errorPayPal, loadingPayPal, order, paypal, payPalDispatch]);
 
-  async function onApproveTest() {
-    await payOrder({ orderId, details: { payer: {} } });
-    refetch();
-    toast.success("Payment successful");
-  }
-
   function createOrder(data, actions) {
     return actions.order
       .create({
