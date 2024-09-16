@@ -1,6 +1,6 @@
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col } from "react-bootstrap";
-import { FaTimes, FaTrash, FaEdit } from "react-icons/fa";
+import { FaTrash, FaEdit } from "react-icons/fa";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
